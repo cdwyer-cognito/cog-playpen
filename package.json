@@ -110,7 +110,9 @@
     "react": "16.7.0",
     "react-dom": "16.7.0",
     "react-select": "2.3.0",
+    "react-signature-canvas": "^1.0.1",
     "regenerator-runtime": "0.12.1",
+    "signature_pad": "^3.0.0-beta.3",
     "uuid": "3.3.2"
   }
 }

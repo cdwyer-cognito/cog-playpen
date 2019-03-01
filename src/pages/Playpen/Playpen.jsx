@@ -1,35 +1,21 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-/**
- * Logon Workflow Component
- * Created for JIRA Epic CWP-66
- * Implementation Stories:
- *   CWP-67 Implement Logon Container
- *
- */
+import SignatureCapture from '../../components/SignatureCapture/SignatureCapture';
+
 class Playpen extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      },
-    };
+    this.state = {};
   }
 
   render() {
-    
-    return (
-      <div>
-      </div>
-    );
+    return <SignatureCapture watermark="Hello World" saveAs="svg" />;
   }
 }
 
-Logon.propTypes = {
-};
+Playpen.propTypes = {};
 
-Logon.defaultProps = {
- 
-};
+Playpen.defaultProps = {};
 
 export default Playpen;
