@@ -86,7 +86,7 @@ class SignatureCapture extends Component {
   };
 
   saveSignature = () => {
-    const { saveAsType } = this.props;
+    const { saveAsType, storeSignature } = this.props;
 
     if (this.sigPad.isEmpty()) {
       window.alert('Signature is empty!');
@@ -111,7 +111,7 @@ class SignatureCapture extends Component {
 
     // need a redux action to save the signature
     // need a redux action to store the sig object to play re-render if signature re-opened
-    console.log(signature);
+    storeSignature(signature);
   };
 
   render() {
@@ -182,6 +182,7 @@ SignatureCapture.propTypes = {
   watermark: PropTypes.string,
   penColor: PropTypes.string,
   saveAsType: PropTypes.string,
+  storeSignature: PropTypes.func.isRequired,
   signature: PropTypes.string,
 };
 
