@@ -18,8 +18,6 @@ storiesOf('components/SignatureCapture', module)
         ''
       )}
       saveAsType={select('Signature output', { png: 'png', jpg: 'jpg', svg: 'svg' }, '')}
-      signature=""
       storeSignature={signature => window.alert(signature)}
-      clickedClose={() => window.alert('Clicked Close')}
     />
   ));

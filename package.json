@@ -1,7 +1,7 @@
 {
-  "name": "ciq-mobile-component-auth",
+  "name": "cog-playpen",
   "version": "0.0.1",
-  "description": "The Cognito iQ Mobile React Authentication Component",
+  "description": "",
   "main": "build/index.js",
   "module": "./build/index.es.js",
   "scripts": {
@@ -25,7 +25,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/CognitoIQ/ciq-mobile-component-auth.git"
+    "url": "git+https://github.com/cdwyer-cognito/cog-playpen.git"
   },
   "keywords": [
     "ciq",
@@ -33,12 +33,12 @@
     "component",
     "auth"
   ],
-  "author": "cognitoiq",
+  "author": "cdwyer-cognito",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/CognitoIQ/ciq-mobile-component-auth/issues"
+    "url": "https://github.com/cdwyer-cognito/cog-playpen/issues"
   },
-  "homepage": "https://github.com/CognitoIQ/ciq-mobile-component-auth#readme",
+  "homepage": "https://github.com/cdwyer-cognito/cog-playpen#readme",
   "devDependencies": {
     "@babel/cli": "^7.2.3",
     "@babel/core": "^7.1.2",
