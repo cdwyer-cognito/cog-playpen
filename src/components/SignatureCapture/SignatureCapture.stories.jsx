@@ -12,11 +12,6 @@ storiesOf('components/SignatureCapture', module)
   .add('Signature Capture configurable', () => (
     <SignatureCapture
       watermark="In signing this box you are agreeing to everything we want"
-      penColor={select(
-        'Pen Colour',
-        { black: 'black', red: 'red', green: 'green', blue: 'blue', yellow: 'yellow' },
-        ''
-      )}
       saveAsType={select('Signature output', { png: 'png', svg: 'svg' }, '')}
       storeSignature={signature => window.alert(signature)}
       autoShowSignatureCapture={boolean('Show Capture on render', false)}

@@ -109,8 +109,10 @@
     "prop-types": "15.6.2",
     "react": "16.7.0",
     "react-dom": "16.7.0",
+    "react-screen-orientation": "0.0.3",
     "react-select": "2.3.0",
     "react-signature-canvas": "^1.0.1",
+    "react-signature-pad-wrapper": "^1.2.4",
     "regenerator-runtime": "0.12.1",
     "signature_pad": "^3.0.0-beta.3",
     "uuid": "3.3.2"

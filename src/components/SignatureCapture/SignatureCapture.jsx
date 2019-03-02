@@ -12,12 +12,14 @@ import ArrowLeftIcon from '@material-ui/icons/ArrowLeft';
 import ClearIcon from '@material-ui/icons/Clear';
 import AddIcon from '@material-ui/icons/Add';
 
-import SignaturePad from 'react-signature-canvas';
+import SignaturePad from 'react-signature-pad-wrapper';
 
 const styles = theme => ({
   container: {
     boxSizing: 'border-box',
     overflow: 'hidden',
+    width: '100%',
+    height: '100%',
   },
   selectBox: {
     boxSizing: 'border-box',
@@ -37,7 +39,10 @@ const styles = theme => ({
     maxWidth: '90%',
     maxHeight: '90%',
   },
-  sigPad: {},
+  sigPad: {
+    width: '100%',
+    height: '100%',
+  },
   sigButtons: {
     position: 'fixed',
     bottom: '2vh',
@@ -60,28 +65,28 @@ const styles = theme => ({
     top: '10vh',
     textAlign: 'center',
   },
+  userDisabled: {
+    '-webkit-touch-callout': 'none' /* iOS Safari */,
+    '-webkit-user-select': 'none' /* Safari */,
+    '-khtml-user-select': 'none' /* Konqueror HTML */,
+    '-moz-user-select': 'none' /* Firefox */,
+    '-ms-user-select': 'none' /* Internet Explorer/Edge */,
+    'user-select': 'none',
+  },
 });
 
 class SignatureCapture extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      windowHeight: 0,
-      windowWidth: 0,
-      acc: 0,
       showCapture: false,
       signatureImage: '',
+      signatureCaptured: false,
     };
     this.sigPad = {};
   }
 
   componentDidMount() {
-    // Listener to pickup on changes to window size
-    window.addEventListener('resize', this.updateDimensions);
-
-    // get dimentions when mounted
-    this.updateDimensions();
-
     // show the signature capture on mount
     const { autoShowSignatureCapture } = this.props;
     if (autoShowSignatureCapture) {
@@ -89,30 +94,10 @@ class SignatureCapture extends Component {
     }
   }
 
-  componentWillUnmount() {
-    // remove the listener
-    window.removeEventListener('resize', this.updateDimensions);
-  }
-
-  updateDimensions = () => {
-    const w = Math.floor(window.innerWidth);
-    const h = Math.floor(window.innerHeight);
-    this.setState({
-      windowHeight: h,
-      windowWidth: w,
-    });
-
-    // adding as rotation clears the image but not the object
-    this.clearSignature();
-  };
-
   clearSignature = () => {
     this.sigPad.clear();
-
-    // workaround to regain focus after clear
-    let { acc } = this.state;
     this.setState({
-      acc: (acc += 1),
+      signatureCaptured: false,
       signatureImage: '',
     });
   };
@@ -140,22 +125,23 @@ class SignatureCapture extends Component {
       save = 'image/svg+xml';
     }
 
-    const signature = this.sigPad.getTrimmedCanvas().toDataURL(save);
+    const signature = this.sigPad.toDataURL(save);
 
     // TBD need a redux action to store the sig object
     storeSignature(signature);
 
     this.setState({
       signatureImage: signature,
+      signatureCaptured: true,
       showCapture: false,
     });
   };
 
   closeSignatureCapture = () => {
-    const { signatureImage } = this.state;
+    const { signatureCaptured } = this.state;
 
     // clear signature object if not saved
-    if (!signatureImage) {
+    if (!signatureCaptured) {
       this.clearSignature();
     }
 
@@ -165,11 +151,11 @@ class SignatureCapture extends Component {
   };
 
   render() {
-    const { windowWidth, windowHeight, acc, showCapture, signatureImage } = this.state;
-    const { classes, watermark, penColor } = this.props;
+    const { showCapture, signatureImage } = this.state;
+    const { classes, watermark } = this.props;
 
     return (
-      <div id="signature_capture">
+      <React.Fragment>
         <Collapse in={!showCapture}>
           <Paper onClick={this.handleSignatureShow}>
             <div className={classes.selectBox}>
@@ -177,8 +163,8 @@ class SignatureCapture extends Component {
                 <img className={classes.signatureImg} alt="sig_preview" src={signatureImage} />
               ) : (
                 <Typography
-                  className={classes.selectBoxText}
-                  variant="h4"
+                  className={[classes.selectBoxText, classes.userDisabled].join(' ')}
+                  variant="h6"
                   align="center"
                   color="textPrimary"
                   gutterBottom
@@ -190,26 +176,21 @@ class SignatureCapture extends Component {
           </Paper>
         </Collapse>
         <Zoom in={showCapture}>
-          <div
-            id="signature_container"
-            className={classes.container}
-            style={{ width: windowWidth, height: windowHeight }}
-          >
+          <div id="signature_container" className={classes.container}>
             <SignaturePad
-              key={acc}
-              penColor={penColor}
+              height={window.innerHeight}
+              width={window.innerWidth}
               backgroundColor="rgba(0,0,0,0)"
-              clearOnResize={false} // this doesn't appear to work, not an issue if I can lock an oriebtation.
-              canvasProps={{
-                width: windowWidth,
-                height: windowHeight,
-                className: styles.sigPad,
-              }}
+              redrawOnResize
               ref={ref => {
                 this.sigPad = ref;
               }}
             />
-            <div key="signature_watermark" id="signature_watermark" className={classes.watermark}>
+            <div
+              key="signature_watermark"
+              id="signature_watermark"
+              className={[classes.watermark, classes.userDisabled].join(' ')}
+            >
               <Typography variant="h5" gutterBottom>
                 {watermark}
               </Typography>
@@ -243,7 +224,7 @@ class SignatureCapture extends Component {
             </div>
           </div>
         </Zoom>
-      </div>
+      </React.Fragment>
     );
   }
 }
@@ -260,7 +241,6 @@ SignatureCapture.propTypes = {
     watermark: PropTypes.string.isRequired,
   }).isRequired,
   watermark: PropTypes.string,
-  penColor: PropTypes.string,
   saveAsType: PropTypes.string,
   storeSignature: PropTypes.func.isRequired,
   autoShowSignatureCapture: PropTypes.bool,
@@ -268,7 +248,6 @@ SignatureCapture.propTypes = {
 
 SignatureCapture.defaultProps = {
   watermark: '',
-  penColor: 'black',
   saveAsType: '',
   autoShowSignatureCapture: false,
 };
