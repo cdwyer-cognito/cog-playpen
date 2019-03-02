@@ -190,7 +190,7 @@ class SignatureCapture extends Component {
               key={acc}
               penColor={penColor}
               backgroundColor="rgba(0,0,0,0)"
-              clearOnResize={false} //this doesn't appear to work, not an issue if I can lock an oriebtation.
+              clearOnResize={false} // this doesn't appear to work, not an issue if I can lock an oriebtation.
               canvasProps={{
                 width: windowWidth,
                 height: windowHeight,
