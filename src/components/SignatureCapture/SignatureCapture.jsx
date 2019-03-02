@@ -172,7 +172,7 @@ class SignatureCapture extends Component {
     const { classes, watermark, penColor } = this.props;
 
     return (
-      <div di="signature_control">
+      <div id="signature_capture">
         <Collapse in={!showCapture}>
           <Paper onClick={this.handleSignatureShow}>
             <div className={classes.selectBox}>
