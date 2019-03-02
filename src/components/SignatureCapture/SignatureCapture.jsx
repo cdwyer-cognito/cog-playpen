@@ -20,15 +20,22 @@ const styles = theme => ({
     overflow: 'hidden',
   },
   selectBox: {
+    boxSizing: 'border-box',
+    display: 'block',
     width: '100%',
-    padding: '40px',
-    maxHeight: '100px',
+    height: '100px',
     textAlign: 'center',
     margin: 'auto',
   },
+  selectBoxText: {
+    boxSizing: 'border-box',
+    margin: 'auto',
+  },
   signatureImg: {
-    maxWidth: '100%',
-    maxHeight: '100%',
+    padding: '5px',
+    margin: 'auto',
+    maxWidth: '90%',
+    maxHeight: '90%',
   },
   sigPad: {},
   sigButtons: {
@@ -166,7 +173,7 @@ class SignatureCapture extends Component {
               {signatureImage ? (
                 <img className={classes.signatureImg} alt="sig_preview" src={signatureImage} />
               ) : (
-                <Typography variant="h4" gutterBottom>
+                <Typography className={classes.selectBoxText} variant="h4" gutterBottom>
                   Sign here
                 </Typography>
               )}
@@ -236,6 +243,7 @@ SignatureCapture.propTypes = {
   classes: PropTypes.shape({
     container: PropTypes.string.isRequired,
     selectBox: PropTypes.string.isRequired,
+    selectBoxText: PropTypes.string.isRequired,
     sigPad: PropTypes.string.isRequired,
     sigButtons: PropTypes.string.isRequired,
     divider: PropTypes.string.isRequired,
