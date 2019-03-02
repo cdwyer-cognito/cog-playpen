@@ -10,7 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import Fab from '@material-ui/core/Fab';
 import ArrowLeftIcon from '@material-ui/icons/ArrowLeft';
 import ClearIcon from '@material-ui/icons/Clear';
-import AddIcon from '@material-ui/icons/Add';
+import Done from '@material-ui/icons/Done';
 
 import SignaturePad from 'react-signature-pad-wrapper';
 
@@ -25,20 +25,20 @@ const styles = theme => ({
     boxSizing: 'border-box',
     display: 'block',
     width: '100%',
-    height: '100px',
+    height: '120px',
     margin: 'auto',
     textAlign: 'center',
   },
   selectBoxText: {
     boxSizing: 'border-box',
     margin: 'auto',
-    paddingTop: '30px',
+    paddingTop: '45px',
   },
   signatureImg: {
-    padding: '5px',
+    padding: '10px',
     margin: 'auto',
-    maxWidth: '90%',
-    maxHeight: '90%',
+    maxWidth: '100%',
+    maxHeight: '100%',
   },
   sigPad: {
     width: '100%',
@@ -199,6 +199,7 @@ class SignatureCapture extends Component {
             <Divider className={classes.divider} />
             <div id="signature_button_group" className={classes.sigButtons}>
               <Fab
+                id="fab_back"
                 color="primary"
                 aria-label="Back"
                 className={classes.fab}
@@ -207,6 +208,7 @@ class SignatureCapture extends Component {
                 <ArrowLeftIcon />
               </Fab>
               <Fab
+                id="fab_clear"
                 color="primary"
                 aria-label="Clear"
                 className={classes.fab}
@@ -215,12 +217,13 @@ class SignatureCapture extends Component {
                 <ClearIcon />
               </Fab>
               <Fab
+                id="fab_save"
                 color="primary"
                 aria-label="Save"
                 className={classes.fab}
                 onClick={this.saveSignature}
               >
-                <AddIcon />
+                <Done />
               </Fab>
             </div>
           </div>
