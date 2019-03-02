@@ -24,8 +24,8 @@ const styles = theme => ({
     display: 'block',
     width: '100%',
     height: '100px',
-    textAlign: 'center',
     margin: 'auto',
+    textAlign: 'center',
   },
   selectBoxText: {
     boxSizing: 'border-box',
@@ -134,22 +134,19 @@ class SignatureCapture extends Component {
       return;
     }
 
-    // png (default), svg, jpeg
+    // png (default) or svg
     let save = '';
     if (saveAsType === 'svg') {
       save = 'image/svg+xml';
     }
 
-    if (saveAsType === 'jpg' || saveAsType === 'jpeg') {
-      save = 'image/jpeg';
-    }
-    const signature = this.sigPad.toDataURL(save);
+    const signature = this.sigPad.getTrimmedCanvas().toDataURL(save);
 
     // TBD need a redux action to store the sig object
     storeSignature(signature);
 
     this.setState({
-      signatureImage: this.sigPad.getTrimmedCanvas().toDataURL(''),
+      signatureImage: signature,
       showCapture: false,
     });
   };
@@ -179,7 +176,13 @@ class SignatureCapture extends Component {
               {signatureImage ? (
                 <img className={classes.signatureImg} alt="sig_preview" src={signatureImage} />
               ) : (
-                <Typography className={classes.selectBoxText} variant="h4" gutterBottom>
+                <Typography
+                  className={classes.selectBoxText}
+                  variant="h4"
+                  align="center"
+                  color="textPrimary"
+                  gutterBottom
+                >
                   Sign here
                 </Typography>
               )}

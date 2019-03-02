@@ -17,7 +17,7 @@ storiesOf('components/SignatureCapture', module)
         { black: 'black', red: 'red', green: 'green', blue: 'blue', yellow: 'yellow' },
         ''
       )}
-      saveAsType={select('Signature output', { png: 'png', jpg: 'jpg', svg: 'svg' }, '')}
+      saveAsType={select('Signature output', { png: 'png', svg: 'svg' }, '')}
       storeSignature={signature => window.alert(signature)}
       autoShowSignatureCapture={boolean('Show Capture on render', false)}
     />
