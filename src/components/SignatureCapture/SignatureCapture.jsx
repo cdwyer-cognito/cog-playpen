@@ -2,44 +2,43 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
+import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
+import Fab from '@material-ui/core/Fab';
+import ArrowLeftIcon from '@material-ui/icons/ArrowLeft';
+import ClearIcon from '@material-ui/icons/Clear';
+import AddIcon from '@material-ui/icons/Add';
 
 import SignaturePad from 'react-signature-canvas';
 
-const styles = () => ({
+const styles = theme => ({
   container: {
     boxSizing: 'border-box',
-    zIndex: '0',
     overflow: 'hidden',
+  },
+  sigPad: {
   },
   sigButtons: {
     position: 'fixed',
-    bottom: '0',
+    bottom: '2vh',
     right: '0',
-    left: '0',
-    marginRight: 'auto',
-    marginLeft: 'auto',
     display: 'flex',
     flex: 'column',
-    paddingBottom: '5px',
-    zIndex: '100',
   },
-  sigButtonsInner: {
-    margin: 'auto',
+  divider: {
+    boxSizing: 'border-box',
+    position: 'fixed',
+    top: '50vh',
+  },
+  fab: {
+    margin: theme.spacing.unit,
   },
   watermark: {
     boxSizing: 'border-box',
     position: 'fixed',
     width: '100%',
-    top: '40px',
+    top: '10vh',
     textAlign: 'center',
-    zIndex: '10',
-  },
-  button: {
-    textTransform: 'none',
-    fontSize: '1.0rem',
-    margin: '10px',
   },
 });
 
@@ -49,6 +48,7 @@ class SignatureCapture extends Component {
     this.state = {
       windowHeight: 0,
       windowWidth: 0,
+      acc: 0,
     };
     this.sigPad = {};
   }
@@ -79,10 +79,17 @@ class SignatureCapture extends Component {
       windowHeight: h,
       windowWidth: w,
     });
+
+    // adding as rotation clears the image but not the object
+    // this.clearSignature();
   };
 
   clearSignature = () => {
     this.sigPad.clear();
+    
+    // workaround to regain focus after clear
+    let {acc} = this.state;
+    this.setState({ acc: acc += 1});
   };
 
   saveSignature = () => {
@@ -115,8 +122,8 @@ class SignatureCapture extends Component {
   };
 
   render() {
-    const { windowWidth, windowHeight } = this.state;
-    const { classes, watermark, penColor } = this.props;
+    const { windowWidth, windowHeight, acc } = this.state;
+    const { classes, watermark, penColor, clickedClose } = this.props;
 
     return (
       <div
@@ -125,7 +132,10 @@ class SignatureCapture extends Component {
         style={{ width: windowWidth, height: windowHeight }}
       >
         <SignaturePad
+          key={acc}
           penColor={penColor}
+          backgroundColor='rgba(0,0,0,0)'
+          clearOnResize={false} //this doesn't appear to work, not an issue if I can lock an oriebtation.
           canvasProps={{
             width: windowWidth,
             height: windowHeight,
@@ -140,31 +150,17 @@ class SignatureCapture extends Component {
             {watermark}
           </Typography>
         </div>
+        <Divider className={classes.divider}/>
         <div id="signature_button_group" className={classes.sigButtons}>
-          <div className={classes.sigButtonsInner}>
-            <Button
-              key="clear"
-              id="clear"
-              variant="contained"
-              size="large"
-              color="primary"
-              className={classes.button}
-              onClick={this.clearSignature}
-            >
-              Clear
-            </Button>
-            <Button
-              key="save"
-              id="save"
-              variant="contained"
-              size="large"
-              color="primary"
-              className={classes.button}
-              onClick={this.saveSignature}
-            >
-              Save
-            </Button>
-          </div>
+            <Fab color="primary" aria-label="Back" className={classes.fab}  onClick={clickedClose}>
+              <ArrowLeftIcon />
+            </Fab>
+            <Fab color="primary" aria-label="Clear" className={classes.fab} onClick={this.clearSignature}>
+              <ClearIcon />
+            </Fab>
+            <Fab color="primary" aria-label="Save" className={classes.fab} onClick={this.saveSignature}>
+              <AddIcon />
+            </Fab>
         </div>
       </div>
     );
@@ -174,14 +170,16 @@ class SignatureCapture extends Component {
 SignatureCapture.propTypes = {
   classes: PropTypes.shape({
     container: PropTypes.string.isRequired,
+    sigPad: PropTypes.string.isRequired,
     sigButtons: PropTypes.string.isRequired,
-    sigButtonsInner: PropTypes.string.isRequired,
+    divider: PropTypes.string.isRequired,
+    fab: PropTypes.string.isRequired,
     watermark: PropTypes.string.isRequired,
-    button: PropTypes.string.isRequired,
   }).isRequired,
   watermark: PropTypes.string,
   penColor: PropTypes.string,
   saveAsType: PropTypes.string,
+  clickedClose: PropTypes.func.isRequired,
   storeSignature: PropTypes.func.isRequired,
   signature: PropTypes.string,
 };
