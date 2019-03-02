@@ -81,6 +81,12 @@ class SignatureCapture extends Component {
 
     // get dimentions when mounted
     this.updateDimensions();
+
+    // show the signature capture on mount
+    const { autoShowSignatureCapture } = this.props;
+    if (autoShowSignatureCapture) {
+      this.setState({ showCapture: true });
+    }
   }
 
   componentWillUnmount() {
@@ -97,7 +103,7 @@ class SignatureCapture extends Component {
     });
 
     // adding as rotation clears the image but not the object
-    // this.clearSignature();
+    this.clearSignature();
   };
 
   clearSignature = () => {
@@ -254,12 +260,14 @@ SignatureCapture.propTypes = {
   penColor: PropTypes.string,
   saveAsType: PropTypes.string,
   storeSignature: PropTypes.func.isRequired,
+  autoShowSignatureCapture: PropTypes.bool,
 };
 
 SignatureCapture.defaultProps = {
   watermark: '',
   penColor: 'black',
   saveAsType: '',
+  autoShowSignatureCapture: false,
 };
 
 export default withStyles(styles)(SignatureCapture);
