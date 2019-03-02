@@ -32,6 +32,7 @@ const styles = theme => ({
   selectBoxText: {
     boxSizing: 'border-box',
     margin: 'auto',
+    paddingTop: '30px',
   },
   signatureImg: {
     padding: '5px',
