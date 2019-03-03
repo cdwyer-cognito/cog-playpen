@@ -83,17 +83,46 @@ class SignatureCapture extends Component {
       showCapture: false,
       signatureImage: '',
       signatureCaptured: false,
+      windowHeight: 0,
+      windowWidth: 0,
     };
     this.sigPad = {};
   }
 
   componentDidMount() {
+    /*
+    Resizing issues:
+    1. using the event listener sizes the signature pad correctly by the redraw
+    of the signature does not work correctly. it is scales badly when switching
+    orientation.
+    2. providing a fixed height and width works in the initial orientation but does
+    not resize the signature pad when switching
+    3. proviging no height/width does not scale the signature pad to the window.
+
+    If the orentation can be lock on mount this will resolve this issue.
+    */
+    this.updateDimensions();
+    window.addEventListener('resize', this.updateDimensions);
     // show the signature capture on mount
     const { autoShowSignatureCapture } = this.props;
     if (autoShowSignatureCapture) {
       this.setState({ showCapture: true });
     }
   }
+
+  componentWillUnmount() {
+    // remove the listener
+    window.removeEventListener('resize', this.updateDimensions);
+  }
+
+  updateDimensions = () => {
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    this.setState({
+      windowHeight: h,
+      windowWidth: w,
+    });
+  };
 
   clearSignature = () => {
     this.sigPad.clear();
@@ -152,7 +181,7 @@ class SignatureCapture extends Component {
   };
 
   render() {
-    const { showCapture, signatureImage } = this.state;
+    const { showCapture, signatureImage, windowWidth, windowHeight } = this.state;
     const { classes, watermark } = this.props;
 
     return (
@@ -179,8 +208,8 @@ class SignatureCapture extends Component {
         <Zoom in={showCapture}>
           <div id="signature_container" className={classes.container}>
             <SignaturePad
-              height={window.innerHeight}
-              width={window.innerWidth}
+              height={windowHeight}
+              width={windowWidth}
               backgroundColor="rgba(0,0,0,0)"
               redrawOnResize
               ref={ref => {
