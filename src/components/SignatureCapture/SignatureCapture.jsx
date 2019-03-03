@@ -92,7 +92,7 @@ class SignatureCapture extends Component {
   componentDidMount() {
     /*
     Resizing issues:
-    1. using the event listener sizes the signature pad correctly by the redraw
+    1. using the event listener sizes the signature pad correctly but the redraw
     of the signature does not work correctly. it is scales badly when switching
     orientation.
     2. providing a fixed height and width works in the initial orientation but does
