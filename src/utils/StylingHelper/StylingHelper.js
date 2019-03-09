@@ -1,3 +1,4 @@
+// object containing the css color string to hex value relationship
 export const cssColor2Hex = {
   // reds
   IndianRed: '#CD5C5C',
@@ -90,7 +91,7 @@ export const cssColor2Hex = {
   CadetBlue: '#5F9EA0',
   SteelBlue: '#4682B4',
   LightSteelBlue: '#B0C4DE',
-  PowderBlue: '#>B0E0E6',
+  PowderBlue: '#B0E0E6',
   LightBlue: '#ADD8E6',
   SkyBlue: '#87CEEB',
   LightSkyBlue: '#87CEFA',
@@ -144,13 +145,18 @@ export const cssColor2Hex = {
   LightGray: '#D3D3D3',
   LightGrey: '#D3D3D3',
   Silver: '#C0C0C0',
-  DarkGray: '#>A9A9A9',
-  DarkGrey: '#>A9A9A9',
+  DarkGray: '#A9A9A9',
+  DarkGrey: '#A9A9A9',
   Gray: '#808080',
+  Grey: '#808080',
   DimGray: '#696969',
+  DimGrey: '#696969',
   LightSlateGray: '#778899',
+  LightSlateGrey: '#778899',
   SlateGray: '#708090',
+  SlateGrey: '#708090',
   DarkSlateGray: '#2F4F4F',
+  DarkSlateGrey: '#2F4F4F',
   Black: '#000000',
 };
 
@@ -174,46 +180,56 @@ export default class {
       .toString(16)
       .padStart(2, '0');
 
-    const hex = `#${r}${g}${b}`;
-
-    return hex;
+    // returns rgb as a hex e.g. '#ffffff'
+    return `#${r}${g}${b}`;
   };
 
   hex2rgbObj = hexString => {
-    // expecting string '#000000'
+    // expecting string '#ffffff'
     const r = parseInt(hexString.substring(1, 3), 16);
     const g = parseInt(hexString.substring(3, 5), 16);
     const b = parseInt(hexString.substring(5, 7), 16);
+    // returnd sn object e.g. {r: 'ff', g: 'ff', b: 'ff'}
     return { r, g, b };
   };
 
   textOnBackground = colorString => {
     // has this already been calculated?
+    // if so return it, no need to calculate again
     if (colorString in this.processedTextOnBackground) {
       return this.processedTextOnBackground[colorString];
     }
 
-    const textOnBackground = {};
+    const textOnBackground = {}; // this will be the object returned
     let hexValue;
+
     if (colorString.substring(0, 1) === '#') {
+      // hex value has been parsed as the argument, no conversion required
       hexValue = colorString;
     } else if (colorString.substring(0, 3) === 'rgb') {
+      // rgb value has been parsed in, convert it to hex
       hexValue = this.rgb2hex(colorString);
     } else if (colorString in cssColor2Hex) {
+      // a css color string has been parsed, get the corrosponding hex value
       hexValue = cssColor2Hex[colorString];
     } else {
-      // color not recognised unable to convert
+      // color not recognised unable to convert and calculate text colour
       return {};
     }
 
+    // convert hex into individual r g b integer values
     const { r, g, b } = this.hex2rgbObj(hexValue);
+
+    // default text to white
     let textColor = '#ffffff';
 
+    // function to check if the color is calculated as light
     const colourIsLight = (red, green, blue) => {
       const a = 1 - (0.299 * red + 0.587 * green + 0.114 * blue) / 255;
       return a < 0.5;
     };
 
+    // if the color is light use black text
     if (colourIsLight(r, g, b)) {
       textColor = '#000000';
     }
@@ -222,7 +238,7 @@ export default class {
     textOnBackground.backgroundColor = hexValue;
     textOnBackground.color = textColor;
 
-    // store for next query
+    // store for next query to avoid processing again
     this.processedTextOnBackground[colorString] = textOnBackground;
 
     return textOnBackground;
