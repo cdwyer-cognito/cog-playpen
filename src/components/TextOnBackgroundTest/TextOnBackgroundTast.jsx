@@ -46,21 +46,21 @@ class TextOnBackgroundTest extends Component {
     const { green, blue } = this.state;
     const red = Math.floor(value);
     const rgb = `rgb(${red},${green},${blue})`;
-    this.setState({ red, query: rgb });
+    this.setState({ red, query: rgb, cssColor: '' });
   };
 
   greenOnChange = (event, value) => {
     const { red, blue } = this.state;
     const green = Math.floor(value);
     const rgb = `rgb(${red},${green},${blue})`;
-    this.setState({ green, query: rgb });
+    this.setState({ green, query: rgb, cssColor: '' });
   };
 
   blueOnChange = (event, value) => {
     const { red, green } = this.state;
     const blue = Math.floor(value);
     const rgb = `rgb(${red},${green},${blue})`;
-    this.setState({ blue, query: rgb });
+    this.setState({ blue, query: rgb, cssColor: '' });
   };
 
   handleCssSelect = event => {
