@@ -4,9 +4,9 @@ import { storiesOf } from '@storybook/react';
 import { withKnobs, select, boolean } from '@storybook/addon-knobs';
 import { withViewport } from '@storybook/addon-viewport';
 
-import TextOnBackgroundTast from './TextOnBackgroundTast';
+import TextOnBackgroundTest from './TextOnBackgroundTest';
 
-storiesOf('components/TextOnBackgroundTast', module)
+storiesOf('components/TextOnBackgroundTest', module)
   .addDecorator(withKnobs)
   .addDecorator(withViewport())
-  .add('Signature Capture configurable', () => <TextOnBackgroundTast />);
+  .add('Signature Capture configurable', () => <TextOnBackgroundTest />);

@@ -87,7 +87,7 @@ class TextOnBackgroundTest extends Component {
         <div className={classes.demoBox} style={stylingObj ? { ...stylingObj } : null}>
           <h3>The quick brown fox jumps over the lazy dog</h3>
         </div>
-        <div>
+        <div className={classes.controls}>
           <div className={classes.sliderContainer}>
             <Typography id="r_label">Red</Typography>
             <Slider
